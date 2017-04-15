@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                                   http://www.springframework.org/schema/beans/spring-beans.xsd
+                                   http://www.springframework.org/schema/context
+                                   http://www.springframework.org/schema/context/spring-context.xsd">
+
+
+    <!-- Autodetect classes and register the corresponding beans -->
+    <context:component-scan
+            base-package="app1"
+            use-default-filters="true">
+
+        <context:exclude-filter
+                type="annotation"
+                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+
+
+    <!-- Allow the use of @Autowire and @Required -->
+    <context:annotation-config />
+
+
+    <bean id="applicationContextProvider" class="app1.utilities.SpringAppContextUtils" />
+
+    <context:property-placeholder location="classpath:webapp1.properties" />
+
+
+    <!-- Setup a spring bean that acts as a C3P0 Connection pool                          -->
+    <!-- NOTE:  Set destroy-method="close" so that Spring will close the connection pool  -->
+    <bean id="postgresDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"  destroy-method="close">
+        <property name="driverClass"              value="${jdbc.driverClass}"        />
+        <property name="jdbcUrl"                  value="${jdbc.jdbcUrl}"            />
+        <property name="user"                     value="${jdbc.user}"               />
+        <property name="password"                 value="${jdbc.password}"           />
+        <property name="initialPoolSize"          value="${jdbc.initialPoolSize}"    />
+        <property name="maxPoolSize"              value="${jdbc.maxPoolSize}"        />
+        <property name="minPoolSize"              value="${jdbc.minPoolSize}"        />
+        <property name="maxIdleTime"              value="${jdbc.maxIdleTime}"        />
+        <property name="maxConnectionAge"         value="${jdbc.maxConnectionAge}"   />
+        <property name="preferredTestQuery"       value="${jdbc.preferredTestQuery}" />
+        <property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
+    </bean>
+
+    <bean id="myProps" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="locations" value="classpath:webapp1.properties" />
+    </bean>
+
+    <bean id="jawrControllerForJs" class="net.jawr.web.servlet.JawrSpringController">
+        <property name="mapping" value=""/>
+        <property name="controllerMapping" value="/jawr/"/>
+        <property name="configLocation" value="/jawr.properties"/>
+        <property name="type" value="js"/>
+    </bean>
+
+    <bean id="jawrControllerForCSS" class="net.jawr.web.servlet.JawrSpringController">
+        <property name="mapping" value=""/>
+        <property name="controllerMapping" value="/jawr/"/>
+        <property name="configLocation" value="/jawr.properties"/>
+        <property name="type" value="css"/>
+    </bean>
+
+    <bean id="jawrControllerForImages" class="net.jawr.web.servlet.JawrSpringController">
+        <property name="mapping" value=""/>
+        <property name="controllerMapping" value="/jawr/"/>
+        <property name="configLocation" value="/jawr.properties"/>
+        <property name="type" value="binary"/>
+    </bean>
+
+</beans>

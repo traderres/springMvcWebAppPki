@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                                   http://www.springframework.org/schema/beans/spring-beans.xsd
+                                   http://www.springframework.org/schema/context
+                                   http://www.springframework.org/schema/context/spring-context.xsd
+                                   http://www.springframework.org/schema/mvc
+                                   http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!-- Autodetect classes and register the beans -->
+    <!-- This context:component-scan should built upon the one
+         that was already done in the applicationContext.  The goal is to add in the @Controller
+         annotations to the context since Spring MVC requires that those beans are
+         registered at this level.
+
+         If context:component-scans a file, then it will overwrite anything
+         that wdone for that file in the applicationContext's component-scan.
+         So, you should use point to the package that was previously ignored,
+         or use the resource-pattern property to only scan the corret Java files
+
+         Be careful if you use the filter tags within the component-scan
+         because that doesn't prevent the file from being scanned, and
+         will likely cause you to overwrite something that you didn't mean to.
+     -->
+    <context:component-scan
+            base-package="app1"
+            use-default-filters="false">
+
+        <!-- Make sure that the use-default filters property is set to false.
+             When a file is scanned with the @Controller annotation,
+             it should be included in the context at this point. -->
+        <context:include-filter
+                type="annotation"
+                expression="org.springframework.stereotype.Controller" />
+
+        <context:include-filter
+                type="annotation"
+                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+
+    <!-- Map the relative address for certain locations -->
+    <mvc:resources  mapping="/resources/**"  location="/resources/" />
+
+
+    <!-- Registers the DefaultAnnotationhandlerMapping and AnnotationMethodHandlerAdapter beans
+        (that are required for Spring MVC to dispatch requests to @Controllers -->
+    <mvc:annotation-driven />
+
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="order"     value="2" />
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+        <property name="prefix"    value="/WEB-INF/jsp/" />
+        <property name="suffix"    value="" />
+    </bean>
+
+    <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+        <property name="mappings">
+            <props>
+                <prop key="/jawr/**/*.js">jawrControllerForJs</prop>
+                <prop key="/jawr/**/*.css">jawrControllerForCSS</prop>
+                <prop key="/jawr/**/*">jawrControllerForImages</prop>
+            </props>
+        </property>
+    </bean>
+</beans>

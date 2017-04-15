@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+
+  <display-name>webapp1</display-name>
+
+  <welcome-file-list>
+    <welcome-file> </welcome-file>
+  </welcome-file-list>
+
+  <!-- Configure ContextLoaderListener to use XML files as configuration. -->
+  <context-param>
+    <description>Type of context to load - spring</description>
+    <param-name>contextClass</param-name>
+    <param-value>org.springframework.web.context.support.XmlWebApplicationContext</param-value>
+  </context-param>
+
+
+  <!-- Configure the application context XML file locations.  -->
+  <context-param>
+    <description>Location of context config file(s)</description>
+    <param-name>contextConfigLocation</param-name>
+    <param-value>/WEB-INF/spring/applicationContext.xml</param-value>
+  </context-param>
+
+
+  <servlet>
+    <servlet-name>dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>/WEB-INF/spring/dispatch-servlet.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+
+
+  <!-- Declare the application context which is loaded on startup and shared by all web context (Spring DispatcherServlet) -->
+  <listener>
+    <description>Tell Spring where my application watcher is</description>
+    <listener-class>
+        <!-- NOTE:  This extends Spring's ContextLoaderListener -->
+        app1.utilities.MyApplicationWatcher
+    </listener-class>
+  </listener>
+
+
+
+  <servlet-mapping>
+    <servlet-name>dispatcher</servlet-name>
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
+
+</web-app>

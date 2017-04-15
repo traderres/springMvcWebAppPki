@@ -1,0 +1,29 @@
+How to import the client.p12 and Root Certificate Authority into Firefox
+------------------------------------------------------------------------
+
+Procedure
+---------
+ 1. Import the PKI client certificate:  import client.p12 into your Firefox browser
+    WARNING:  Your web app now *needs* valid client cert (.p12 file) to connect
+    a. Startup Firefox
+    b. Pull Tools / Options / Advanced
+    c. Click "View Certificates"
+    d. Click "Your Certificates" tab
+    d. Click "Import"
+    e. Browser to where the client.p12 file is located:  c:\temp\client_cert\client.p12
+       Enter password from the previous step:  secret
+
+
+ 2. Import your Root Certificate Authority (that created client.p12) into your Firefox browser
+    a. Startup Firefox
+    b. Pull Tools / Options / Advanced
+    c. Click "View Certificates"
+    d. Click "Authorities" tab
+    e. Click "Import"
+    f. Browse to where you have the root.pem
+    g. Check "Trust this CA to identify websites"
+       Check "Trust this CA to identify email users"
+       Check "Trust this CA to identify software developers"
+       Press OK
+       Press OK
+

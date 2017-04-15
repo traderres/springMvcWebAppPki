@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="windows-1252" ?>
+
+<configuration debug="false">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{MM/dd/yyyy HH:mm:ss} %-5level %c %m%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <logger name="org.springframework" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+
+    <logger name="com.mchange" level="DEBUG" additivity="false">
+        <!-- C3P0 Connection Pool Logging is here -->
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="app1" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <logger name="net.jawr" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+    </logger>
+
+    <root level="DEBUG">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
